@@ -16,5 +16,4 @@ const messageSchema = yup.object().shape({
         .max(30, 'Your message must be no more than ${max} characters')
         .required('A message is required.')
     });
-    
 export default messageSchema;
