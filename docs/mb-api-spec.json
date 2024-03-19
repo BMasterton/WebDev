@@ -2,7 +2,7 @@
 	"openapi": "3.1.0",
 	"info": {
 		"title": "Message Board API",
-		"version": "1.0.0"
+		"version": "1.0.1"
 	},
 	"servers": [{
 		"url": "http://10.21.75.134:3004/v1",
@@ -55,8 +55,65 @@
 						}
 					}
 				]
+			},
+			"user": {
+				"type": "object",
+				"description": "User information, email, username, and password",
+				"required": [
+					"email",
+					"username",
+					"password"
+				],
+				"properties": {
+					"email": {
+						"type": "string",
+						"format": "email",
+						"description": "Email of the user",
+						"example": "user@user.com"
+					},
+					"username": {
+						"type": "string",
+						"minLength": 3,
+						"maxLength": 15,
+						"pattern": "^[A-Za-z0-9_]+$",
+						"description": "The username of a user, used for logging in",
+						"example": "TTbowe"
+					},
+					"password": {
+						"type": "string",
+						"format": "password",
+						"minLength": 8,
+						"maxLength": 64,
+						"description": "a users Password, kept secret",
+						"example": "PassW0rD2!S3C5t"
+					}
+				}
+			}, 
+			"userWithId": {
+				"allOf": [{
+						"$ref": "#/components/schemas/user"
+					},
+					{
+						"type": "object",
+						"description": "A user with id",
+						"required": [
+							"id"
+						],
+						"properties": {
+							"id": {
+								"type": "number",
+								"description": "users's id.",
+								"example": 1
+							}
+						}
+					}
+				]
 			}
-		}
+		},"responses": {
+			"429TooManyRequests": {
+				"description": "Too many requests."
+				}
+			}
 	},
 	"paths": {
 		"/messages": {
@@ -81,6 +138,9 @@
 					},
 					"400": {
 						"description": "Bad Request"
+					},
+					"429": {
+						"$ref": "#/components/responses/429TooManyRequests"
 					}
 				}
 			},
@@ -111,6 +171,48 @@
 					},
                     "400": {
 						"description": "Bad Request - Message in the body of the request is missing or malformed "
+					},
+					"429": {
+						"$ref": "#/components/responses/429TooManyRequests"
+					}
+				}
+			}
+		},
+		"/users" : {
+			"description": "All the users",
+			"post": {
+				"summary": "Add new user to users",
+				"operationId": "addNewUser",
+				"description": "Adding a new user to the users array ",
+				"requestBody": {
+					"description": "users's data",
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/user"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "Created: Added new User",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/userWithId"
+								}
+							}
+						}
+					},
+                    "400": {
+						"description": "Bad Request - The User in the body of the request is missing or malformed "
+					},
+					"423": {
+						"description": "Forbidden - Username or Email already exists "
+					},
+					"429": {
+						"$ref": "#/components/responses/429TooManyRequests"
 					}
 				}
 			}
