@@ -25,13 +25,12 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-messageSchema.set('toJSON', {
+userSchema.set('toJSON', {
     versionKey: false,
     virtuals: true,
     transform: (doc, ret) => { delete ret._id; }
     });
 
 
-//export default messageSchema; // yup version
 
 export default mongoose.model('user', userSchema);
