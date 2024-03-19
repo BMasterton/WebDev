@@ -26,3 +26,4 @@ console.log('Mongoose disconnected');
 
 
 import './models/message-schema.js';
+import './models/user-schema.js';
