@@ -10,6 +10,13 @@
 	}],
 	"security": [],
 	"components": {
+		"securitySchemes": {
+			"bearerAuth": {
+				"type": "http",
+				"scheme": "bearer",
+				"bearerFormat": "JWT"
+				}
+			},
 		"schemas": {
 			"message": {
 				"type": "object",
@@ -190,6 +197,9 @@
 				}
 			},
 			"post": {
+				"security": [
+					{ "bearerAuth": [] }
+					],
 				"summary": "Add new message to messages",
 				"operationId": "addNewMessage",
 				"description": "Adding a new message to the messages array ",
@@ -216,6 +226,9 @@
 					},
                     "400": {
 						"description": "Bad Request - Message in the body of the request is missing or malformed "
+					},
+					"401": {
+						"description": "Bad Request - password or username doesn't match "
 					},
 					"429": {
 						"$ref": "#/components/responses/429TooManyRequests"
