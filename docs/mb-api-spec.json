@@ -108,6 +108,51 @@
 						}
 					}
 				]
+			},
+			"login": {
+				"type": "object",
+				"description": "User information, email, username, and password",
+				"required": [
+					"username",
+					"password"
+				],
+				"properties": {
+					"username": {
+						"type": "string",
+						"minLength": 3,
+						"maxLength": 50,
+						"description": "The username of a user, used for logging in",
+						"example": "TTbowe"
+					},
+					"password": {
+						"type": "string",
+						"format": "password",
+						"minLength": 8,
+						"maxLength": 64,
+						"description": "a users Password, kept secret",
+						"example": "PassW0rD2!S3C5t"
+					}
+				}
+			}, 
+			"loginWithId": {
+				"allOf": [{
+						"$ref": "#/components/schemas/login"
+					},
+					{
+						"type": "object",
+						"description": "A user with id",
+						"required": [
+							"id"
+						],
+						"properties": {
+							"id": {
+								"type": "number",
+								"description": "users's id.",
+								"example": 1
+							}
+						}
+					}
+				]
 			}
 		},"responses": {
 			"429TooManyRequests": {
@@ -207,6 +252,54 @@
 					},
                     "400": {
 						"description": "Bad Request - The User in the body of the request is missing or malformed "
+					},
+					"423": {
+						"description": "Forbidden - Username or Email already exists "
+					},
+					"429": {
+						"$ref": "#/components/responses/429TooManyRequests"
+					}
+				}
+			}
+		},
+		"/login" : {
+			"description": "login information",
+			"post": {
+				"summary": "Add new user login data",
+				"operationId": "loginUser",
+				"description": "sending in login information from the userd ",
+				"requestBody": {
+					"description": "users's data",
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/login"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Successfully logged in.",
+						"content": {
+						"application/json": {
+						"schema": {
+						"type": "object",
+						"description": "JWT Token",
+						"properties": {
+						"token": {
+						"type": "string"
+						}
+						}
+						}
+						}
+						}
+						},
+                    "400": {
+						"description": "Bad Request - The User in the body of the request is missing or malformed "
+					},
+					"401": {
+						"description": "Bad Request - password or username doesn't match "
 					},
 					"423": {
 						"description": "Forbidden - Username or Email already exists "

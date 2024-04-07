@@ -8,18 +8,23 @@ const userModel = mongoose.model('user');
 
 const alreadyExists = async ( email, username ) => (
     await userModel.exists({
-    '$or': [
-    { email: email },
-    { username: username }
-    ]
+        '$or': [
+                { email: email },
+                { username: username }
+            ]
     })
-    );
+);
+
+// Login Handler
+const logInUser = (req, res) => {
+    res.status(200).send('Successful API Login Request');
+    };
 
 const registerNewUser = async (req, res) => {
 
 try {
     if( await alreadyExists(req.body.email, req.body.username)){
-        res.status(423).send("Forbidden - Username or Email already exists")
+        res.status(403).send("Forbidden - Username or Email already exists")
     } 
     else {
         let user = await userModel.create(req.body);
@@ -57,4 +62,4 @@ try {
             }
         ));
 
-export {registerNewUser};
+export {registerNewUser, logInUser};
