@@ -40,5 +40,9 @@ const addNewMessage = async (req, res) => {
         }
     };
 
+    const updateMessage = async (req, res) => {
+        res.status(200).send('Successful API Update Message PATCH Request');
+        }
 
-export { getAllMessages, addNewMessage };
+
+export { getAllMessages, addNewMessage, updateMessage };

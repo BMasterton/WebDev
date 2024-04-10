@@ -140,27 +140,8 @@
 						"example": "PassW0rD2!S3C5t"
 					}
 				}
-			}, 
-			"loginWithId": {
-				"allOf": [{
-						"$ref": "#/components/schemas/login"
-					},
-					{
-						"type": "object",
-						"description": "A user with id",
-						"required": [
-							"id"
-						],
-						"properties": {
-							"id": {
-								"type": "number",
-								"description": "users's id.",
-								"example": 1
-							}
-						}
-					}
-				]
 			}
+			
 		},"responses": {
 			"429TooManyRequests": {
 				"description": "Too many requests."
@@ -286,8 +267,31 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/login"
+								"type": "object",
+								"description": "User information, email, username, and password",
+								"required": [
+									"username",
+									"password"
+								],
+								"properties": {
+									"username": {
+										"type": "string",
+										
+										"maxLength": 50,
+										"description": "The username of a user, used for logging in",
+										"example": "TTbowe"
+									},
+									"password": {
+										"type": "string",
+										"format": "password",
+										
+										"maxLength": 64,
+										"description": "a users Password, kept secret",
+										"example": "PassW0rD2!S3C5t"
+									}
+								}
 							}
+							
 						}
 					}
 				},
